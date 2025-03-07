@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dosage_units">
+        <item>Таблетка</item>
+        <item>мг</item>
+    </string-array>
+    <string-array name="repeat_units">
+        <item>Минут</item>
+        <item>Часов</item>
+        <item>Дней</item>
+    </string-array>
+</resources>

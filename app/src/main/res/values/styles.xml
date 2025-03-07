@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Базовая тема приложения, наследуемая от AppCompat -->
+    <style name="Theme.PillReminder" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Настройте цвета, шрифты и другие атрибуты по вашему усмотрению -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+    </style>
+    <style name="MyActionModeTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Пользовательский стиль для Action Mode с синим фоном -->
+    <style name="MyActionModeStyle" parent="Widget.AppCompat.ActionMode">
+        <!-- Фон Action Mode -->
+        <item name="android:background">#2196F3</item>
+        <!-- Стиль заголовка Action Mode -->
+        <item name="android:titleTextStyle">@style/MyActionModeTitleTextStyle</item>
+        <!-- Drawable для кнопки закрытия Action Mode -->
+        <item name="actionModeCloseDrawable">@drawable/ic_close_white</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Другие атрибуты вашей темы -->
+        <item name="actionModeStyle">@style/MyActionModeStyle</item>
+        <item name="android:actionBarSize">64dp</item>
+        <item name="android:listPreferredItemHeightSmall">60dp</item>
+        <item name="materialCalendarFullscreenTheme">@style/Custom.MaterialCalendar.Fullscreen</item>
+
+    </style>
+    <style name="Custom.MaterialCalendar.Fullscreen" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+</resources>

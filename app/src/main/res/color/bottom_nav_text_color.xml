@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет для выбранного пункта меню -->
+    <item android:state_checked="true" android:color="@android:color/holo_green_light" />
+    <!-- Цвет для невыбранного пункта меню -->
+    <item android:state_checked="false" android:color="@android:color/darker_gray" />
+</selector>

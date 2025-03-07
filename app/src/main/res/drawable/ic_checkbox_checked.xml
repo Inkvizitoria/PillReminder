@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Синий круг в качестве фона -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M12,2
+                          A10,10 0 1,1 12,22
+                          A10,10 0 1,1 12,2"/>
+    <!-- Белая галочка -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16.59,8.58L10,15.17L7.41,12.59L6,14l4,4l8-8z"/>
+</vector>

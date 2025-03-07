@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scheduleCreationRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Название лекарства -->
+    <TextView
+        android:id="@+id/tvMedicineName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название лекарства"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <!-- Тип дозировки (Таблетка/Миллиграмм) -->
+    <RadioGroup
+        android:id="@+id/rgDosageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbTablet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Таблетка"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbMilligram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Миллиграмм"/>
+    </RadioGroup>
+
+    <!-- Поле ввода дозировки -->
+    <EditText
+        android:id="@+id/etDosage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите дозировку"/>
+
+    <!-- TabLayout для переключения между вкладками "Периодичный" и "Конкретный" -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@android:color/holo_blue_dark"/>
+
+    <!-- ViewPager2, который будет содержать 2 фрагмента: PeriodicTabFragment и SingleTabFragment -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Кнопка "Сохранить" -->
+    <Button
+        android:id="@+id/btnSaveSchedule"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="65dp"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"/>
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flexbox="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/eventBlockContainer"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/event_block_background"
+    android:layout_margin="4dp"
+    android:padding="8dp"
+    flexbox:flexWrap="nowrap"
+    flexbox:justifyContent="space_between"
+    flexbox:alignItems="center">
+
+    <!-- Текстовое поле для описания события. Оно занимает всю оставшуюся ширину -->
+    <TextView
+        android:id="@+id/tvEventText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Принять 1 таблетку, очень длинное описание, которое должно переноситься на новую строку, если его не помещается"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        flexbox:layout_flexGrow="1" />
+
+    <!-- Вертикальный контейнер для кнопок -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="4dp">
+
+        <!-- Кнопка "Принято" с иконкой -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAccept"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_accept"
+            android:backgroundTint="#5BAF4C"
+            android:backgroundTintMode="src_in"
+            android:contentDescription="Принято" />
+
+        <!-- Кнопка "Не принято" с иконкой -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNotAccept"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_skip"
+            android:backgroundTint="#db4437"
+            android:backgroundTintMode="src_in"
+            android:contentDescription="Не принято" />
+    </LinearLayout>
+</com.google.android.flexbox.FlexboxLayout>

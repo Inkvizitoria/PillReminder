@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/historyByDayRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header: стрелки для перехода и текущая дата -->
+    <LinearLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnPrevDate"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:background="@drawable/ic_arrow_left"/>
+
+        <TextView
+            android:id="@+id/tvCurrentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сегодня"
+            android:textSize="18sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/btnNextDate"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:background="@drawable/ic_arrow_right"/>
+    </LinearLayout>
+
+    <!-- RecyclerView для списка истории -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHistoryByDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

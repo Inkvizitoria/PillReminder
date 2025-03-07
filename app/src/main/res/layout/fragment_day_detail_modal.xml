@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dayDetailRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- Левая пустая область -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"/>
+
+    <!-- Центральная колонка с часами -->
+    <LinearLayout
+        android:id="@+id/centerColumn"
+        android:layout_width="694dp"
+        android:layout_height="480dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        >
+
+    <!-- Заголовок даты -->
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:text="06 Mar 2025"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Список почасовых слотов -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDayDetail"
+            android:layout_width="694dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- Правая пустая область -->
+
+</LinearLayout>

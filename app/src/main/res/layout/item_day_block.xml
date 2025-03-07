@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/day_block_background">
+
+    <TextView
+        android:id="@+id/tvDayLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvEntriesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Нет записей"
+        android:textSize="14sp"/>
+</LinearLayout>

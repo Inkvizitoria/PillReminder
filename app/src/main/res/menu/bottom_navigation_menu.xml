@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_day_view"
+        android:icon="@drawable/ic_calendar"
+        android:title="Календарь"/>
+    <item
+        android:id="@+id/menu_medicine"
+        android:icon="@drawable/ic_medicine"
+        android:title="Лекарства"/>
+    <item
+        android:id="@+id/menu_schedule"
+        android:icon="@drawable/ic_schedule"
+        android:title="График"/>
+    <item
+        android:id="@+id/menu_history"
+        android:icon="@drawable/ic_history"
+        android:title="История"/>
+    <!-- Новый пункт меню: Корзина (для удалённых лекарств) -->
+    <item
+        android:id="@+id/menu_trash"
+        android:icon="@drawable/ic_trash"
+        android:title="Корзина" />
+</menu>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendarCellNoOffset"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="4dp"
+    android:background="@drawable/day_block_background">
+
+    <!-- Номер дня -->
+    <TextView
+        android:id="@+id/tvDayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <!-- День недели (например, Пн) -->
+    <TextView
+        android:id="@+id/tvDayOfWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пн"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"/>
+
+    <!-- Контейнер для "прямоугольников" (блоков записей) -->
+    <LinearLayout
+        android:id="@+id/dayEventContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginTop="4dp"/>
+</LinearLayout>
