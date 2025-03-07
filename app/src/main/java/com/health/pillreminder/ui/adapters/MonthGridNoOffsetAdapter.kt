@@ -46,31 +46,37 @@ class MonthGridNoOffsetAdapter(
             tvDayOfWeek.text = cell.dayOfWeek
             dayEventContainer.removeAllViews()
 
-            // Для каждого entry в cell.entries создаём небольшой прямоугольник или TextView
+            // Для каждого entry создаём TextView с отступами
             for (entry in cell.entries) {
-                val blockView = TextView(dayEventContainer.context).apply {
-                    textSize = 12f
-                    setPadding(4, 2, 4, 2)
-                    // Пример: выводим "R4мин" если repeatValue=4, repeatUnit=Минут
-                    // или время scheduledTime, если фиксированная
-                    text = if (entry.repeatValue != null && entry.repeatUnit != null) {
-                        Log.d("TAG", "${entry.name} Каждые ${entry.repeatValue} ${entry.repeatUnit}")
-                        "${entry.name} Каждые ${entry.repeatValue} ${entry.repeatUnit}"
-                    } else {
-                        val formattedDate = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(
-                            Date(entry.scheduledTime)
-                        )
-                        Log.d("TAG","${entry.name} в $formattedDate");
-                        // Если fixed time
-                        "${entry.name} в $formattedDate"
+                if (!entry.isDeleted) {
+                    val blockView = TextView(dayEventContainer.context).apply {
+                        textSize = 12f
+                        setPadding(8, 4, 8, 4)
+                        text = if (entry.repeatValue != null && entry.repeatUnit != null) {
+                            "${entry.name} Каждые ${entry.repeatValue} ${entry.repeatUnit}"
+                        } else {
+                            val formattedDate = SimpleDateFormat(
+                                "HH:mm",
+                                Locale.getDefault()
+                            ).format(Date(entry.scheduledTime))
+                            "${entry.name} в $formattedDate"
+                        }
+                        setBackgroundResource(R.drawable.event_block_background)
+
+                        // Добавляем отступы между блоками
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(4, 4, 4, 4) // Отступы сверху и снизу
+                        }
                     }
-                    // Можно установить фон
-                    setBackgroundResource(R.drawable.event_block_background)
+                    dayEventContainer.addView(blockView)
                 }
-                dayEventContainer.addView(blockView)
             }
         }
     }
+
 
 }
 

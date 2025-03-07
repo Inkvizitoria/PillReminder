@@ -3,6 +3,7 @@ package com.health.pillreminder.ui.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +24,9 @@ class MedicineSelectionForScheduleFragment : Fragment(R.layout.fragment_medicine
 
     private lateinit var recyclerMedicineList: RecyclerView
     private lateinit var btnNext: Button
-    private val adapter = MedicineSelectionAdapter() // некий адаптер для списка
+    private lateinit var tvTitleSelectMedicine: TextView
+    private lateinit var tvEmptyMedicineInstructions: TextView
+    private val adapter = MedicineSelectionAdapter()
 
     var listener: OnMedicinesSelectedListener? = null
 
@@ -31,26 +34,38 @@ class MedicineSelectionForScheduleFragment : Fragment(R.layout.fragment_medicine
         super.onViewCreated(view, savedInstanceState)
         recyclerMedicineList = view.findViewById(R.id.recyclerMedicineList)
         btnNext = view.findViewById(R.id.btnNext)
+        tvTitleSelectMedicine = view.findViewById(R.id.tvTitleSelectMedicine)
+        tvEmptyMedicineInstructions = view.findViewById(R.id.tvEmptyMedicineInstructions)
 
         recyclerMedicineList.layoutManager = LinearLayoutManager(requireContext())
         recyclerMedicineList.adapter = adapter
 
-        // Загрузим список лекарств из БД (пример)
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val medicines = AppDatabase.getInstance().medicineDao().getAllMedicines() // пример DAO
-            withContext(Dispatchers.Main) {
-                adapter.submitList(medicines)
-            }
-        }
+        loadMedicines()
 
         btnNext.setOnClickListener {
-            val selected = adapter.getSelectedMedicines() // метод адаптера
+            val selected = adapter.getSelectedMedicines()
             if (selected.isEmpty()) {
                 Toast.makeText(requireContext(), "Выберите хотя бы одно лекарство", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Передаём выбранные лекарства наружу
             listener?.onMedicinesSelectedForSchedule(selected)
+        }
+    }
+
+    private fun loadMedicines() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val medicines = AppDatabase.getInstance().medicineDao().getAllMedicines()
+            withContext(Dispatchers.Main) {
+                val isEmpty = medicines.isEmpty()
+
+                // Если лекарств нет, показываем инструкцию, скрываем заголовок и RecyclerView
+                tvEmptyMedicineInstructions.visibility = if (isEmpty) View.VISIBLE else View.GONE
+                tvTitleSelectMedicine.visibility = if (isEmpty) View.GONE else View.VISIBLE
+                recyclerMedicineList.visibility = if (isEmpty) View.GONE else View.VISIBLE
+                btnNext.visibility = if (isEmpty) View.GONE else View.VISIBLE
+
+                adapter.submitList(medicines)
+            }
         }
     }
 }

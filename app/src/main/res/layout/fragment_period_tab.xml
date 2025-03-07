@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/periodTabRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etRepeatValue"
+    <!-- Поле для ввода числа + выпадающий список -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите число (repeatValue)"/>
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/spinnerRepeatUnit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/etRepeatValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="Введите число"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_edittext_background"/>
 
+        <Spinner
+            android:id="@+id/spinnerRepeatUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/spinner_background"
+            android:popupBackground="@android:color/white"
+            style="@style/CustomSpinnerStyle"/>
+
+    </LinearLayout>
+
+    <!-- Кнопка выбора периода -->
     <Button
         android:id="@+id/btnSelectRange"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выбрать период"/>
+        android:text="Выбрать период"
+        android:textSize="16sp"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="8dp"/>
 
+    <!-- Информация о выбранном периоде -->
     <TextView
         android:id="@+id/tvRangeInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Период не выбран"/>
+        android:text="Период не выбран"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp"/>
 </LinearLayout>

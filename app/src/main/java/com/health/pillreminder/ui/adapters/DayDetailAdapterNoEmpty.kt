@@ -46,33 +46,36 @@ class DayDetailAdapterNoEmpty(
             tvTimeLabel.text = sdf.format(Date(slot.timestamp))
             eventContainer.removeAllViews()
             for (entry in slot.entries) {
-                val blockView = LayoutInflater.from(eventContainer.context)
-                    .inflate(R.layout.item_event_block, eventContainer, false)
-                val tvEventText = blockView.findViewById<TextView>(R.id.tvEventText)
-                val btnAccept = blockView.findViewById<Button>(R.id.btnAccept)
-                val btnNotAccept = blockView.findViewById<Button>(R.id.btnNotAccept)
+                if (!entry.isDeleted) {
+                    val blockView = LayoutInflater.from(eventContainer.context)
+                        .inflate(R.layout.item_event_block, eventContainer, false)
+                    val tvEventText = blockView.findViewById<TextView>(R.id.tvEventText)
+                    val btnAccept = blockView.findViewById<Button>(R.id.btnAccept)
+                    val btnNotAccept = blockView.findViewById<Button>(R.id.btnNotAccept)
 
-                tvEventText.text = "Принять ${entry.name} в дозировке ${entry.dosage} ${entry.dosageUnit}"
-                // Ключ для истории: (scheduleEntryId, slot.timestamp)
-                val key = Pair(entry.id, slot.timestamp)
-                val savedStatus = historyMap[key]
-                if (savedStatus != null) {
-                    when (savedStatus) {
-                        HistoryStatus.TAKEN -> blockView.setBackgroundResource(R.drawable.event_block_background_taken)
-                        HistoryStatus.SKIPPED -> blockView.setBackgroundResource(R.drawable.event_block_background_skipped)
-                        else -> {}
+                    tvEventText.text =
+                        "Принять ${entry.name} в дозировке ${entry.dosage} ${entry.dosageUnit}"
+                    // Ключ для истории: (scheduleEntryId, slot.timestamp)
+                    val key = Pair(entry.id, slot.timestamp)
+                    val savedStatus = historyMap[key]
+                    if (savedStatus != null) {
+                        when (savedStatus) {
+                            HistoryStatus.TAKEN -> blockView.setBackgroundResource(R.drawable.event_block_background_taken)
+                            HistoryStatus.SKIPPED -> blockView.setBackgroundResource(R.drawable.event_block_background_skipped)
+                            else -> {}
+                        }
+                        btnAccept.isEnabled = false
+                        btnNotAccept.isEnabled = false
+                    } else {
+                        btnAccept.setOnClickListener {
+                            onHistorySaved(HistoryStatus.TAKEN, entry, slot.timestamp)
+                        }
+                        btnNotAccept.setOnClickListener {
+                            onHistorySaved(HistoryStatus.SKIPPED, entry, slot.timestamp)
+                        }
                     }
-                    btnAccept.isEnabled = false
-                    btnNotAccept.isEnabled = false
-                } else {
-                    btnAccept.setOnClickListener {
-                        onHistorySaved(HistoryStatus.TAKEN, entry, slot.timestamp)
-                    }
-                    btnNotAccept.setOnClickListener {
-                        onHistorySaved(HistoryStatus.SKIPPED, entry, slot.timestamp)
-                    }
+                    eventContainer.addView(blockView)
                 }
-                eventContainer.addView(blockView)
             }
         }
     }

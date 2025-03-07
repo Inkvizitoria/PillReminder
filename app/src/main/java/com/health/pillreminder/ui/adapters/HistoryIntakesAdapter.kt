@@ -98,7 +98,7 @@ class HistoryIntakesAdapter(
         fun bind(item: HistoryIntakeItem) {
             Log.d("TEST", item.status)
             tvMedicine.text = "Лекарство: ${item.medicineName}"
-            tvPlannedDate.text = "Запланированная дата приёма: ${sdfDateTime.format(Date(item.plannedDate))}"
+            tvPlannedDate.text = "Запланированная дата приёма: ${sdfDateTime.format(Date(item.intakeTime))}"
             tvStatus.text = "Статус: ${(item.status)}"
             tvDosage.text = "Дозировка: ${item.dosage}"
 

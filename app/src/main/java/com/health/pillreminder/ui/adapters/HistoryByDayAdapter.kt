@@ -89,7 +89,7 @@ class HistoryByDayAdapter(emptyList: List<Any>) : RecyclerView.Adapter<RecyclerV
 
         fun bind(item: HistoryIntakeItem) {
             tvMedicine.text = "Лекарство: ${item.medicineName}"
-            tvPlannedDate.text = "Запланированная дата приёма: ${sdfDateTime.format(Date(item.plannedDate))}"
+            tvPlannedDate.text = "Запланированная дата приёма: ${sdfDateTime.format(Date(item.intakeTime))}"
             tvStatus.text = "Статус: ${item.status}"
             tvDosage.text = "Дозировка: ${item.dosage}"
             btnDelete.setOnClickListener {

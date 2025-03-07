@@ -3,6 +3,7 @@ package com.health.pillreminder.ui.fragments
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
@@ -22,6 +23,7 @@ class MedicineHistoryFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MedicineMultiSelectAdapter
+    private lateinit var emptyMessage: TextView
     private var actionMode: ActionMode? = null
 
     private val actionModeCallback = object : ActionMode.Callback {
@@ -29,9 +31,11 @@ class MedicineHistoryFragment : Fragment() {
             mode?.menuInflater?.inflate(R.menu.medicine_history_context_menu, menu)
             return true
         }
+
         override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
+
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            return when(item?.itemId) {
+            return when (item?.itemId) {
                 R.id.action_restore -> {
                     restoreSelectedMedicines()
                     mode?.finish()
@@ -45,6 +49,7 @@ class MedicineHistoryFragment : Fragment() {
                 else -> false
             }
         }
+
         override fun onDestroyActionMode(mode: ActionMode?) {
             adapter.clearSelection()
             actionMode = null
@@ -57,9 +62,11 @@ class MedicineHistoryFragment : Fragment() {
         adapter.clearSelection()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_medicine_history, container, false)
         recyclerView = view.findViewById(R.id.recycler_history)
+        emptyMessage = view.findViewById(R.id.emptyMessage)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = MedicineMultiSelectAdapter(emptyList()).apply {
             showEditButton = false
@@ -84,6 +91,8 @@ class MedicineHistoryFragment : Fragment() {
             val deleted: List<Medicine> = AppDatabase.getInstance().medicineDao().getDeletedMedicines()
             withContext(Dispatchers.Main) {
                 adapter.updateData(deleted)
+                emptyMessage.visibility = if (deleted.isEmpty()) View.VISIBLE else View.GONE
+                recyclerView.visibility = if (deleted.isEmpty()) View.GONE else View.VISIBLE
             }
         }
     }

@@ -17,6 +17,9 @@ interface ScheduleEntryDao {
     @Query("DELETE FROM schedule_entries WHERE id = :id")
     suspend fun deleteById(id: Long)
 
+    @Query("UPDATE schedule_entries SET isDeleted = 1 WHERE medicineId = :medicineId")
+    suspend fun markSchedulesAsDeleted(medicineId: Long)
+
     @Query("SELECT * FROM schedule_entries WHERE id = :id LIMIT 1")
     suspend fun getScheduleEntryById(id: Long): ScheduleEntry?
 

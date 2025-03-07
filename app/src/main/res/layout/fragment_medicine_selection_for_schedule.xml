@@ -16,7 +16,20 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
 
-    <!-- RecyclerView со списком лекарств (чекбоксы или что-то подобное) -->
+    <!-- Текст-инструкция, если нет лекарств -->
+    <TextView
+        android:id="@+id/tvEmptyMedicineInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Создайте лекарства в разделе 'Лекарства'.\n\n2. Затем создайте график приёма."
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- RecyclerView со списком лекарств -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMedicineList"
         android:layout_width="match_parent"
@@ -28,5 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="65dp"
-        android:text="Далее"/>
+        android:text="Далее"
+        android:visibility="gone"/>
 </LinearLayout>

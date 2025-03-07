@@ -37,8 +37,10 @@ class PeriodTabFragment : Fragment(R.layout.fragment_period_tab) {
         tvRangeInfo = view.findViewById(R.id.tvRangeInfo)
 
         // Настраиваем spinner (например, ["минут", "часов", "дней"])
-        val units = listOf("минут", "часов", "дней")
-        spinnerRepeatUnit.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, units)
+        val units = listOf("Минут", "Часов", "Дней")
+        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item, units)
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        spinnerRepeatUnit.adapter = adapter
 
         // Выбор диапазона дат
         btnSelectRange.setOnClickListener {

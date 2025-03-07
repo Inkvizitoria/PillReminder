@@ -3,10 +3,12 @@ package com.health.pillreminder.ui.fragments
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,10 +24,10 @@ import kotlinx.coroutines.withContext
 class MedicineFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyMessage: TextView
     private lateinit var adapter: MedicineMultiSelectAdapter
     private var actionMode: ActionMode? = null
 
-    // Action Mode callback для массовых действий (например, удаление)
     private val actionModeCallback = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode?.menuInflater?.inflate(R.menu.medicine_context_menu, menu)
@@ -50,27 +52,23 @@ class MedicineFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_medicine, container, false)
         recyclerView = view.findViewById(R.id.recycler_medicines)
+        emptyMessage = view.findViewById(R.id.emptyMessage)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = MedicineMultiSelectAdapter(emptyList()).apply {
             showEditButton = true
         }
 
-        adapter.onItemClick = { medicine ->
-            // Обычный клик, если не выбран режим мультивыбора
-            // Можно открыть диалог редактирования или выполнить другое действие
-        }
+        adapter.onItemClick = { medicine -> }
         adapter.onItemLongClick = {
             if (actionMode == null) {
                 actionMode = (activity as? AppCompatActivity)?.startSupportActionMode(actionModeCallback)
             }
             updateActionModeTitle()
         }
-        // Устанавливаем callback для кнопки редактирования:
         adapter.onEditClick = { medicine ->
-            // Здесь вызываем именно нужную модалку:
             EditMedicineDialogFragment.newInstance(medicine)
                 .show(childFragmentManager, "EditMedicineDialog")
         }
@@ -87,10 +85,9 @@ class MedicineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Подписываемся на LiveData из Room
         AppDatabase.getInstance().medicineDao().getAllMedicinesLiveData()
             .observe(viewLifecycleOwner) { medicines ->
-                adapter.updateData(medicines)
+                updateUI(medicines)
             }
     }
 
@@ -106,28 +103,49 @@ class MedicineFragment : Fragment() {
     }
 
     private fun loadMedicines() {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val medicines: List<Medicine> = AppDatabase.getInstance().medicineDao().getAllMedicines()
             withContext(Dispatchers.Main) {
-                adapter.updateData(medicines)
+                updateUI(medicines)
             }
+        }
+    }
+
+    private fun updateUI(medicines: List<Medicine>) {
+        if (medicines.isEmpty()) {
+            emptyMessage.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        } else {
+            emptyMessage.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            adapter.updateData(medicines)
         }
     }
 
     private fun deleteSelectedMedicines() {
         val selected = adapter.getSelectedItems()
         if (selected.isEmpty()) return
+
         AlertDialog.Builder(requireContext())
             .setTitle("Удалить выбранные лекарства")
-            .setMessage("Вы действительно хотите удалить выбранные лекарства?")
+            .setMessage("Вы действительно хотите удалить выбранные лекарства? Их графики исчезнут из расписания, но останутся в истории.")
             .setPositiveButton("Удалить") { _, _ ->
                 CoroutineScope(Dispatchers.IO).launch {
+                    val db = AppDatabase.getInstance()
+                    val medicineDao = db.medicineDao()
+                    val scheduleDao = db.scheduleEntryDao()
+
                     for (medicine in selected) {
-                        val updated = medicine.copy(isDeleted = true)
-                        AppDatabase.getInstance().medicineDao().update(updated)
+                        // Помечаем графики как удаленные
+                        scheduleDao.markSchedulesAsDeleted(medicine.id)
+
+                        // Помечаем лекарство как удаленное
+                        val updatedMedicine = medicine.copy(isDeleted = true)
+                        medicineDao.update(updatedMedicine)
                     }
+
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Лекарства удалены", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Лекарства и их графики скрыты", Toast.LENGTH_SHORT).show()
                         loadMedicines()
                     }
                 }

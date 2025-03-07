@@ -10,11 +10,13 @@ data class ScheduleEntry(
     val medicineId: Long,
     val name: String,
     val dosage: Float,
-    val dosageUnit: String,         // "таблетка" или "мг"
-    val scheduledTime: Long,        // если фиксированное время, хранится как timestamp
-    val repeatValue: Int?,          // если повторяемое, число (например, каждые 2)
-    val repeatUnit: String?,        // "минут", "часов", "дней"
-    val periodStart: Long,          // начало периода графика
-    val periodEnd: Long,             // конец периода графика
-    val reminderConfig: ReminderConfig? = null
+    val dosageUnit: String,
+    val scheduledTime: Long,
+    val repeatValue: Int?,
+    val repeatUnit: String?,
+    val periodStart: Long,
+    val periodEnd: Long,
+    val reminderConfig: ReminderConfig? = null,
+    val isDeleted: Boolean = false // <-- Новый флаг
 )
+

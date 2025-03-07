@@ -142,25 +142,30 @@ class DayDetailModalFragment : DialogFragment() {
 
     private fun generateRecurringTimesHours(dayStart: Long, repeatValue: Int): List<Long> {
         val result = mutableListOf<Long>()
-        val startTime = dayStart + 4 * 60 * 60 * 1000L  // 4:00 AM
-        var time = startTime + repeatValue * 60 * 60 * 1000L
-        val endTime = dayStart + 24 * 60 * 60 * 1000L
+        var time = dayStart // Начинаем с 00:00
+        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
+
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 60 * 1000L
+            time += repeatValue * 60 * 60 * 1000L // Добавляем repeatValue часов
         }
+
         return result
     }
-
+    /**
+     * Генерирует времена для повторяющихся событий, заданных в минутах.
+     * Начинаем с 00:00, первая метка = 00:00 + repeatValue минут, до 24:00.
+     */
     private fun generateRecurringTimesMinutes(dayStart: Long, repeatValue: Int): List<Long> {
         val result = mutableListOf<Long>()
-        val startTime = dayStart + 4 * 60 * 60 * 1000L  // 4:00 AM
-        var time = startTime + repeatValue * 60 * 1000L
-        val endTime = dayStart + 24 * 60 * 60 * 1000L
+        var time = dayStart // Начинаем с 00:00
+        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
+
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 1000L
+            time += repeatValue * 60 * 1000L // Добавляем repeatValue минут
         }
+
         return result
     }
 }

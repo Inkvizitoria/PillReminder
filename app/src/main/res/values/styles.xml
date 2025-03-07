@@ -21,6 +21,12 @@
         <item name="actionModeCloseDrawable">@drawable/ic_close_white</item>
     </style>
 
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:popupBackground">@android:color/white</item>
+    </style>
+
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Другие атрибуты вашей темы -->
         <item name="actionModeStyle">@style/MyActionModeStyle</item>

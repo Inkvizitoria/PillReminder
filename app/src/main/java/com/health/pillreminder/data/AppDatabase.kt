@@ -13,7 +13,7 @@ import com.health.pillreminder.data.entities.Medicine
 import com.health.pillreminder.data.entities.ScheduleEntry
 
 // Обновите номер версии здесь (например, с 1 на 2)
-@Database(entities = [Medicine::class, ScheduleEntry::class, HistoryEntry::class], version = 5)
+@Database(entities = [Medicine::class, ScheduleEntry::class, HistoryEntry::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun medicineDao(): MedicineDao

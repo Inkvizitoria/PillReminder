@@ -110,6 +110,7 @@ class HistoryIntakesFragment : Fragment(R.layout.fragment_history_by_day) {
                             HistoryIntakeItem(
                                 historyId = entry.id,
                                 medicineName = medicine.name,
+                                intakeTime = entry.intakeTime,
                                 plannedDate = plannedDate,
                                 status = statusReadable,
                                 dosage = "${schedule.dosage} ${schedule.dosageUnit}",

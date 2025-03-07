@@ -78,6 +78,13 @@ class ScheduleCreationFragment : Fragment(R.layout.fragment_schedule_creation) {
         val adapter = SchedulePagerAdapter(this)
         viewPagerSchedule.adapter = adapter
 
+        if (selectedMedicines.isNotEmpty()) {
+            val medicineNames = selectedMedicines.joinToString(", ") { it.name }
+            tvMedicineName.text = "График для: $medicineNames"
+        } else {
+            tvMedicineName.text = "Нет выбранных лекарств"
+        }
+
         TabLayoutMediator(tabLayoutSchedule, viewPagerSchedule) { tab, position ->
             when (position) {
                 0 -> tab.text = "Периодичный"
@@ -150,15 +157,42 @@ class ScheduleCreationFragment : Fragment(R.layout.fragment_schedule_creation) {
                 }
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), if (periodic) "Периодичный график сохранён" else "График на конкретный день сохранён", Toast.LENGTH_SHORT).show()
-                    requireActivity().supportFragmentManager.popBackStack()
+                    Toast.makeText(
+                        requireContext(),
+                        if (periodic) "Периодичный график сохранён" else "График на конкретный день сохранён",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // Очищаем состояние перед возвратом
+                    resetState()
+
+                    // Возвращаемся к выбору лекарств
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, MedicineSelectionForScheduleFragment())
+                        .commit()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Ошибка сохранения графика: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ошибка сохранения графика: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                     Log.e("ScheduleCreation", "Ошибка сохранения графика", e)
                 }
             }
         }
     }
+
+    private fun resetState() {
+        selectedMedicines.clear()
+        dosageValue = 0f
+        repeatValue = null
+        repeatUnit = null
+        periodStart = 0L
+        periodEnd = 0L
+        singleTimestamp = 0L
+    }
+
+
 }
