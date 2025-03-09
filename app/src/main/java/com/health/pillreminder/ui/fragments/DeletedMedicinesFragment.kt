@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
@@ -19,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MedicineHistoryFragment : Fragment() {
+class DeletedMedicinesFragment : Fragment(R.layout.fragment_trash_list) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MedicineMultiSelectAdapter
@@ -28,7 +27,7 @@ class MedicineHistoryFragment : Fragment() {
 
     private val actionModeCallback = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode?.menuInflater?.inflate(R.menu.medicine_history_context_menu, menu)
+            mode?.menuInflater?.inflate(R.menu.trash_context_menu, menu)
             return true
         }
 
@@ -63,7 +62,7 @@ class MedicineHistoryFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.fragment_medicine_history, container, false)
+        val view = inflater.inflate(R.layout.fragment_trash_history, container, false)
         recyclerView = view.findViewById(R.id.recycler_history)
         emptyMessage = view.findViewById(R.id.emptyMessage)
 
@@ -122,6 +121,7 @@ class MedicineHistoryFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     for (medicine in selected) {
                         AppDatabase.getInstance().medicineDao().delete(medicine)
+                        AppDatabase.getInstance().scheduleEntryDao().deleteByMedicineId(medicine.id)
                     }
                     withContext(Dispatchers.Main) {
                         ToastUtils.showCustomToast(requireContext(), "Лекарства удалены окончательно", ToastType.ERROR)

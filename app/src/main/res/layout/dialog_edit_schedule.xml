@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etDosage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Дозировка" />
+
+    <EditText
+        android:id="@+id/etRepeatValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Период (число)" />
+
+    <Spinner
+        android:id="@+id/spinnerRepeatUnit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/repeat_units" />
+
+    <Button
+        android:id="@+id/btnSelectStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбрать дату начала" />
+
+    <Button
+        android:id="@+id/btnSelectEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбрать дату окончания" />
+
+    <Button
+        android:id="@+id/btnSelectTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбрать время" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сохранить" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отмена" />
+</LinearLayout>

@@ -10,7 +10,7 @@ import com.health.pillreminder.data.entities.Medicine
 import com.health.pillreminder.ui.fragments.DayViewFragment
 import com.health.pillreminder.ui.fragments.HistoryFragment
 import com.health.pillreminder.ui.fragments.MedicineFragment
-import com.health.pillreminder.ui.fragments.MedicineHistoryFragment
+import com.health.pillreminder.ui.fragments.TrashFragment
 import com.health.pillreminder.ui.fragments.MedicineSelectionForScheduleFragment
 import com.health.pillreminder.ui.fragments.MonthCalendarGridFragment
 import com.health.pillreminder.ui.fragments.ScheduleCreationFragment
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(selectionFragment)
                 }
                 R.id.menu_history -> loadFragment(HistoryFragment())  // Можно заменить, если нужен другой фрагмент
-                R.id.menu_trash -> loadFragment(MedicineHistoryFragment())
+                R.id.menu_trash -> loadFragment(TrashFragment())
             }
             true
         }
