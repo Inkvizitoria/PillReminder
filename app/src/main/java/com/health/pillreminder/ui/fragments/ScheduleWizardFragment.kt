@@ -48,7 +48,7 @@ class ScheduleWizardFragment : Fragment(R.layout.fragment_schedule_wizard_contai
                 .replace(R.id.schedule_wizard_container, configFragment)
                 .commit()
         } else {
-            Toast.makeText(requireContext(), "Ни одно лекарство не выбрано", Toast.LENGTH_SHORT).show()
+            ToastUtils.showCustomToast(requireContext(), "Ни одно лекарство не выбрано", ToastType.INFO)
         }
     }
 
@@ -133,7 +133,7 @@ class ScheduleWizardFragment : Fragment(R.layout.fragment_schedule_wizard_contai
                 AppDatabase.getInstance().scheduleEntryDao().insert(entry)
             }
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "График сохранён", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "График сохранён", ToastType.ERROR)
                 // Завершаем флоу, например, возвращаемся к главному экрану
                 requireActivity().supportFragmentManager.popBackStack()
             }

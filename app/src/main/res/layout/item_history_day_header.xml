@@ -6,23 +6,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:padding="8dp">
+    android:paddingHorizontal="8dp">
 
     <Button
         android:id="@+id/btnPrevDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="←"/>
-
-    <TextView
-        android:id="@+id/tvDayHeader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="06.03.2025 Понедельник"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="4dp"/>
 
     <Button
         android:id="@+id/btnNextDay"

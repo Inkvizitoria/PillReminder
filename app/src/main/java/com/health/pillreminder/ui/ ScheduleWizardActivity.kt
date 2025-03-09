@@ -50,7 +50,7 @@ class ScheduleWizardActivity : AppCompatActivity(),
                 .replace(R.id.fragment_container, fragment)
                 .commit()
         } else {
-            Toast.makeText(this, "Ничего не выбрано", Toast.LENGTH_SHORT).show()
+            ToastUtils.showCustomToast(this, "Ничего не выбрано", ToastType.ERROR)
         }
     }
 
@@ -127,7 +127,7 @@ class ScheduleWizardActivity : AppCompatActivity(),
                     AppDatabase.getInstance().scheduleEntryDao().insert(entry)
                 }
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ScheduleWizardActivity, "График сохранён", Toast.LENGTH_SHORT).show()
+                    ToastUtils.showCustomToast(this@ScheduleWizardActivity, "График сохранён", ToastType.SUCCESS)
                     finish()
                 }
             }

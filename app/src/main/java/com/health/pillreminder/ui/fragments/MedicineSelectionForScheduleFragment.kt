@@ -6,12 +6,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.health.pillreminder.R
 import com.health.pillreminder.data.AppDatabase
 import com.health.pillreminder.data.entities.Medicine
+import com.health.pillreminder.ui.viewmodel.ScheduleSharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,13 +45,23 @@ class MedicineSelectionForScheduleFragment : Fragment(R.layout.fragment_medicine
         loadMedicines()
 
         btnNext.setOnClickListener {
-            val selected = adapter.getSelectedMedicines()
-            if (selected.isEmpty()) {
-                Toast.makeText(requireContext(), "Выберите хотя бы одно лекарство", Toast.LENGTH_SHORT).show()
+            val selectedMedicines = adapter.getSelectedMedicines()
+            if (selectedMedicines.isEmpty()) {
+                ToastUtils.showCustomToast(requireContext(), "Выберите хотя бы одно лекарство", ToastType.INFO)
                 return@setOnClickListener
             }
-            listener?.onMedicinesSelectedForSchedule(selected)
+            val viewModel = ViewModelProvider(requireActivity()).get(ScheduleSharedViewModel::class.java)
+
+            // ✅ Очищаем ViewModel перед переходом
+            viewModel.clearData()
+
+            val fragment = ScheduleCreationFragment.newInstance(selectedMedicines)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
+
     }
 
     private fun loadMedicines() {

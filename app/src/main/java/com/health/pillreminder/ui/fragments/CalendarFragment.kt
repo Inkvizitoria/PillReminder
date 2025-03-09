@@ -40,11 +40,6 @@ class CalendarFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val entries = AppDatabase.getInstance().scheduleEntryDao().getAllScheduleEntries()
             withContext(Dispatchers.Main) {
-                if (entries.isEmpty()) {
-                    Toast.makeText(requireContext(), "Записей нет", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Найдено записей: ${entries.size}", Toast.LENGTH_SHORT).show()
-                }
                 recyclerView.adapter = CalendarAdapter(entries)
             }
         }

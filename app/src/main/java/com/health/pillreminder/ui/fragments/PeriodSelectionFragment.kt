@@ -63,7 +63,7 @@ class PeriodSelectionFragment : Fragment() {
         btnNext.setOnClickListener {
             // Если период не выбран, показываем сообщение
             if (tvSelectedRange.text.toString() == "Период не выбран") {
-                Toast.makeText(requireContext(), "Выберите период", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "Выберите период", ToastType.ERROR)
             } else {
                 periodSelectionListener?.onPeriodSelected(selectedPeriodDays, start, end)
             }

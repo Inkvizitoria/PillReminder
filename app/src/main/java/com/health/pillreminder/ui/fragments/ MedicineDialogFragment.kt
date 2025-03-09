@@ -31,7 +31,7 @@ class MedicineDialogFragment : DialogFragment() {
                 val description = etDescription.text.toString().trim()
 
                 if (name.isEmpty()) {
-                    Toast.makeText(requireContext(), "Название не может быть пустым", Toast.LENGTH_SHORT).show()
+                    ToastUtils.showCustomToast(requireContext(), "Название не может быть пустым", ToastType.ERROR)
                     return@setPositiveButton
                 }
 
@@ -41,7 +41,7 @@ class MedicineDialogFragment : DialogFragment() {
                         Medicine(name = name, description = description)
                     )
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext().applicationContext, "Лекарство добавлено", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext().applicationContext, "Лекарство добавлено", ToastType.SUCCESS)
                         // Вызываем обратный вызов, чтобы родительский фрагмент обновил список
                         onMedicineAdded?.invoke()
                     }

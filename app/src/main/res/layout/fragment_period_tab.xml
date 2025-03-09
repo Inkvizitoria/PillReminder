@@ -1,61 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/periodTabRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="8dp">
-
-    <!-- Поле для ввода числа + выпадающий список -->
+    android:layout_height="match_parent">
     <LinearLayout
+        android:id="@+id/periodTabRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <EditText
-            android:id="@+id/etRepeatValue"
-            android:layout_width="0dp"
+        <!-- Инструкция по выбору активного периода -->
+        <TextView
+            android:id="@+id/tvActivePeriodLabel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Введите число"
-            android:textSize="16sp"
-            android:padding="8dp"
             android:layout_margin="8dp"
-            android:background="@drawable/rounded_edittext_background"/>
+            android:text="Укажите активное время графика (например, с 10:00 до 19:00)"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
 
-        <Spinner
-            android:id="@+id/spinnerRepeatUnit"
-            android:layout_width="wrap_content"
+        <!-- Контейнер для выбора времени активного периода -->
+        <LinearLayout
+            android:id="@+id/activePeriodContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilActiveStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etActiveStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Начало: 10:00"
+                    android:padding="15px"
+                    android:inputType="time"
+                    android:focusable="false"
+                    android:clickable="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilActiveEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etActiveEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15px"
+                    android:hint="Конец: 19:00"
+                    android:inputType="time"
+                    android:focusable="false"
+                    android:clickable="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Контейнер для ввода значения повторения и выбора единицы -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etRepeatValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Введите число"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/rounded_edittext_background"/>
+
+            <Spinner
+                android:id="@+id/spinnerRepeatUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="@android:color/white"
+                style="@style/CustomSpinnerStyle"/>
+        </LinearLayout>
+
+        <!-- Кнопка выбора периода дат -->
+        <Button
+            android:id="@+id/btnSelectRange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выбрать период"
+            android:textSize="16sp"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="0dp"/>
+
+        <!-- Информация о выбранном периоде -->
+        <TextView
+            android:id="@+id/tvRangeInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Период не выбран"
+            android:textSize="16sp"
+            android:gravity="center"
             android:padding="8dp"
-            android:background="@drawable/spinner_background"
-            android:popupBackground="@android:color/white"
-            style="@style/CustomSpinnerStyle"/>
-
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
-
-    <!-- Кнопка выбора периода -->
-    <Button
-        android:id="@+id/btnSelectRange"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Выбрать период"
-        android:textSize="16sp"
-        android:backgroundTint="@color/purple_500"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Информация о выбранном периоде -->
-    <TextView
-        android:id="@+id/tvRangeInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Период не выбран"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="8dp"/>
 </LinearLayout>

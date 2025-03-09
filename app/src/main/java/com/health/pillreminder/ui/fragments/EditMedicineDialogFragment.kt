@@ -51,7 +51,7 @@ class EditMedicineDialogFragment : DialogFragment() {
                 val updatedName = etName.text.toString().trim()
                 val updatedDescription = etDescription.text.toString().trim()
                 if (updatedName.isEmpty()) {
-                    Toast.makeText(requireContext(), "Название не может быть пустым", Toast.LENGTH_SHORT).show()
+                    ToastUtils.showCustomToast(requireContext(), "Название не может быть пустым", ToastType.ERROR)
                     return@setPositiveButton
                 }
                 val updatedMedicine = Medicine(
@@ -63,7 +63,7 @@ class EditMedicineDialogFragment : DialogFragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     AppDatabase.getInstance().medicineDao().update(updatedMedicine)
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Лекарство обновлено", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(), "Лекарство обновлено", ToastType.SUCCESS)
                     }
                 }
             }

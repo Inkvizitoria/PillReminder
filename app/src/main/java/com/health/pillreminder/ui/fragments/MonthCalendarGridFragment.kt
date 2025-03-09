@@ -2,6 +2,8 @@ package com.health.pillreminder.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -31,13 +33,19 @@ class MonthCalendarGridFragment : Fragment(R.layout.fragment_month_calendar_grid
     private var scheduleEntries: List<ScheduleEntry> = emptyList()
     private val dayCells = mutableListOf<DayCell>()
 
-    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnPrevMonth = view.findViewById(R.id.btnPrevMonth)
         btnNextMonth = view.findViewById(R.id.btnNextMonth)
         tvMonthYear = view.findViewById(R.id.tvMonthYear)
         recyclerView = view.findViewById(R.id.recyclerMonthGridNoOffset)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+
+        // Вычисляем spanCount адаптивно
+        val displayMetrics = resources.displayMetrics
+        val cellWidthPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 175f, displayMetrics)
+        val screenWidthPx = displayMetrics.widthPixels
+        val spanCount = (screenWidthPx / cellWidthPx).toInt().coerceAtLeast(1)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
         val calendar = Calendar.getInstance()
         currentYear = calendar.get(Calendar.YEAR)
@@ -60,7 +68,6 @@ class MonthCalendarGridFragment : Fragment(R.layout.fragment_month_calendar_grid
             }
             loadData()
         }
-
         loadData()
     }
 
@@ -68,7 +75,6 @@ class MonthCalendarGridFragment : Fragment(R.layout.fragment_month_calendar_grid
         lifecycleScope.launch(Dispatchers.IO) {
             scheduleEntries = AppDatabase.getInstance().scheduleEntryDao().getAllScheduleEntries()
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "Найдено ${scheduleEntries.size} записей в БД", Toast.LENGTH_LONG).show()
                 createGridCells()
             }
         }

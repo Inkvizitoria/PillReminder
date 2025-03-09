@@ -85,12 +85,12 @@ class MedicineConfigurationFragment : Fragment() {
 
             // Если дозировка не задана или равна 0, выводим ошибку
             if (dosage <= 0f) {
-                Toast.makeText(requireContext(), "Введите корректную дозировку", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "Введите корректную дозировку", ToastType.ERROR)
                 return@setOnClickListener
             }
             // Проверяем, что либо введено время, либо задан интервал повторения (repeatValue > 0)
             if (timeStr.isEmpty() && (repeatValue == null || repeatValue <= 0)) {
-                Toast.makeText(requireContext(), "Введите время приема или интервал повторения", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "Введите время приема или интервал повторения", ToastType.ERROR)
                 return@setOnClickListener
             }
 

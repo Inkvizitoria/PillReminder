@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:layout_margin="4dp"
+    android:layout_marginHorizontal="4dp"
     android:background="@drawable/history_item_background">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="348dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="График ID:"
             android:textColor="@android:color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvMedicineName"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="Лекарство:"
             android:textColor="@android:color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvDosage"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Дозировка:"
             android:textColor="@android:color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvPeriod"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="Период:"
             android:textColor="@android:color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvScheduleTime"
@@ -52,6 +52,28 @@
             android:layout_height="wrap_content"
             android:text="Время графика:"
             android:textColor="@android:color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/btnEditSchedule"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="Редактировать"
+            android:padding="4dp"/>
+
+        <ImageView
+            android:id="@+id/btnDeleteSchedule"
+            android:layout_width="32dp"
+            android:layout_marginVertical="10dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_trash"
+            android:contentDescription="Удалить"
+            android:padding="4dp"/>
     </LinearLayout>
 </LinearLayout>

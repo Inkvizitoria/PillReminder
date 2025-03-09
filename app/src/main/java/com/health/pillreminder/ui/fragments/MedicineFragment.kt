@@ -145,7 +145,7 @@ class MedicineFragment : Fragment() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Лекарства и их графики скрыты", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(), "Лекарства и их графики скрыты", ToastType.INFO)
                         loadMedicines()
                     }
                 }

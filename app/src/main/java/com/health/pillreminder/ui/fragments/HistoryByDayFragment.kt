@@ -109,7 +109,7 @@ class HistoryByDayFragment : Fragment(R.layout.fragment_history_by_day) {
                                 intakeTime = entry.intakeTime,
                                 plannedDate = plannedDate,
                                 status = statusReadable,
-                                dosage = "${schedule.dosage} ${schedule.dosageUnit}",
+                                dosage = "${formatWord(schedule.dosageUnit, schedule.dosage)}",
                                 historyDate = entry.date
                             )
                         )
@@ -130,11 +130,46 @@ class HistoryByDayFragment : Fragment(R.layout.fragment_history_by_day) {
             }.sortedByDescending { it.dateMillis }
 
             withContext(Dispatchers.Main) {
-                if (historyDays.isEmpty()) {
-                    Toast.makeText(requireContext(), "История за этот день пуста", Toast.LENGTH_SHORT).show()
-                }
                 adapter.submitList(historyDays)
             }
         }
+    }
+
+    fun formatWord(word: String, count: Number): String {
+        // Задаём формы для известных слов
+        val forms = when (word.lowercase(Locale.ROOT)) {
+            "час", "часы", "часов" -> Triple("час", "часа", "часов")
+            "день", "дни", "дней" -> Triple("день", "дня", "дней")
+            "минута", "минуты", "минут" -> Triple("минута", "минуты", "минут")
+            "таблетка", "таблетки" -> Triple("таблетка", "таблетки", "таблеток")
+            "миллиграмм", "миллиграммы" -> Triple("миллиграмм", "миллиграмма", "миллиграмм")
+            else -> return "$count $word"
+        }
+        val (form1, form2, form3) = forms
+
+        val countDouble = count.toDouble()
+        val isInteger = countDouble % 1.0 == 0.0
+        // Форматируем число: если целое – выводим как int, иначе – как double
+        val countStr = if (isInteger) countDouble.toInt().toString() else countDouble.toString()
+
+        val form = if (!isInteger) {
+            // Для дробных чисел смотрим на целую часть
+            val intPart = countDouble.toInt()
+            if (intPart in 0..4) form2 else form3
+        } else {
+            // Для целых чисел стандартное правило склонения
+            val intVal = countDouble.toInt()
+            val n = intVal % 100
+            if (n in 11..19) {
+                form3
+            } else {
+                when (intVal % 10) {
+                    1 -> form1
+                    2, 3, 4 -> form2
+                    else -> form3
+                }
+            }
+        }
+        return "$countStr $form"
     }
 }

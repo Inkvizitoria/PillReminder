@@ -34,7 +34,7 @@ class MedicineSelectionFragment : Fragment() {
         btnNext = view.findViewById(R.id.btnNext)
         btnNext.setOnClickListener {
             if (selectedMedicines.isEmpty()) {
-                Toast.makeText(requireContext(), "Выберите хотя бы одно лекарство", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "Выберите хотя бы одно лекарство", ToastType.INFO)
             } else {
                 (parentFragment as? SelectionListener)?.onMedicinesSelected(selectedMedicines)
             }

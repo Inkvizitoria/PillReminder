@@ -69,12 +69,12 @@ class HistoryByDayAdapter(emptyList: List<Any>) : RecyclerView.Adapter<RecyclerV
     }
 
     inner class DayHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvDayHeader: TextView = itemView.findViewById(R.id.tvDayHeader)
+        //private val tvDayHeader: TextView = itemView.findViewById(R.id.tvDayHeader)
         private val btnPrevDay: Button = itemView.findViewById(R.id.btnPrevDay)
         private val btnNextDay: Button = itemView.findViewById(R.id.btnNextDay)
 
         fun bind(day: HistoryIntakeDay) {
-            tvDayHeader.text = sdfDay.format(Date(day.dateMillis))
+            //tvDayHeader.text = sdfDay.format(Date(day.dateMillis))
             btnPrevDay.visibility = View.INVISIBLE
             btnNextDay.visibility = View.INVISIBLE
         }

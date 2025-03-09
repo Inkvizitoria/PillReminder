@@ -93,12 +93,12 @@ class DayDetailModalFragment : DialogFragment() {
                 } else if (entry.repeatValue != null && entry.repeatUnit != null) {
                     val unit = entry.repeatUnit.toLowerCase(Locale.getDefault())
                     if (unit in listOf("час", "часов")) {
-                        val times = generateRecurringTimesHours(dayStart, entry.repeatValue)
+                        val times = generateRecurringTimesHours(dayStart, entry.repeatValue, entry.activeStartTime, entry.activeEndTime)
                         for (t in times) {
                             timeMap.getOrPut(t) { mutableListOf() }.add(entry)
                         }
                     } else if (unit in listOf("минут", "минуты", "минута")) {
-                        val times = generateRecurringTimesMinutes(dayStart, entry.repeatValue)
+                        val times = generateRecurringTimesMinutes(dayStart, entry.repeatValue, entry.activeStartTime, entry.activeEndTime)
                         for (t in times) {
                             timeMap.getOrPut(t) { mutableListOf() }.add(entry)
                         }
@@ -119,8 +119,10 @@ class DayDetailModalFragment : DialogFragment() {
             }
 
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "Найдено ${timeSlots.size} временных меток", Toast.LENGTH_LONG).show()
-                recyclerView.adapter = DayDetailAdapterNoEmpty(timeSlots, historyMapByKey) { status, entry, intakeTime ->
+                recyclerView.adapter = DayDetailAdapterNoEmpty(
+                    timeSlots,
+                    historyMapByKey
+                ) { status, entry, intakeTime ->
                     val historyEntry = HistoryEntry(
                         scheduleEntryId = entry.id,
                         intakeTime = intakeTime,
@@ -131,7 +133,9 @@ class DayDetailModalFragment : DialogFragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         AppDatabase.getInstance().historyDao().insert(historyEntry)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), "Запись сохранена: $status", Toast.LENGTH_SHORT).show()
+                            ToastUtils.showCustomToast(
+                                requireContext(),
+                                "Запись сохранена: $status", ToastType.SUCCESS)
                             loadDayEntries()
                         }
                     }
@@ -140,32 +144,41 @@ class DayDetailModalFragment : DialogFragment() {
         }
     }
 
-    private fun generateRecurringTimesHours(dayStart: Long, repeatValue: Int): List<Long> {
+    private fun generateRecurringTimesHours(
+        dayStart: Long,
+        repeatValue: Int,
+        activeStartTime: Long,
+        activeEndTime: Long
+    ): List<Long> {
         val result = mutableListOf<Long>()
-        var time = dayStart // Начинаем с 00:00
-        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
-
+        val startTime = dayStart + activeStartTime  // активное время начала, например, 10:00
+        val endTime = dayStart + activeEndTime        // активное время окончания, например, 19:00
+        var time = startTime + repeatValue * 60 * 60 * 1000L
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 60 * 1000L // Добавляем repeatValue часов
+            time += repeatValue * 60 * 60 * 1000L
         }
-
         return result
     }
+
     /**
      * Генерирует времена для повторяющихся событий, заданных в минутах.
      * Начинаем с 00:00, первая метка = 00:00 + repeatValue минут, до 24:00.
      */
-    private fun generateRecurringTimesMinutes(dayStart: Long, repeatValue: Int): List<Long> {
+    private fun generateRecurringTimesMinutes(
+        dayStart: Long,
+        repeatValue: Int,
+        activeStartTime: Long,
+        activeEndTime: Long
+    ): List<Long> {
         val result = mutableListOf<Long>()
-        var time = dayStart // Начинаем с 00:00
-        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
-
+        val startTime = dayStart + activeStartTime
+        val endTime = dayStart + activeEndTime
+        var time = startTime + repeatValue * 60 * 1000L
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 1000L // Добавляем repeatValue минут
+            time += repeatValue * 60 * 1000L
         }
-
         return result
     }
 }

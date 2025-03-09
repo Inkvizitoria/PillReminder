@@ -9,7 +9,7 @@ class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> PeriodTabFragment()
-            1 -> SingleTabFragment()
+            1 -> SpecificIntakeSubTabFragment()
             else -> throw IllegalArgumentException("Invalid tab position")
         }
     }

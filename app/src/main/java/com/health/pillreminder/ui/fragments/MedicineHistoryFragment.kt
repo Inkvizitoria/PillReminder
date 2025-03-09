@@ -106,7 +106,7 @@ class MedicineHistoryFragment : Fragment() {
                 AppDatabase.getInstance().medicineDao().update(restored)
             }
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "Лекарства восстановлены", Toast.LENGTH_SHORT).show()
+                ToastUtils.showCustomToast(requireContext(), "Лекарства восстановлены", ToastType.SUCCESS)
                 loadDeletedMedicines()
             }
         }
@@ -124,7 +124,7 @@ class MedicineHistoryFragment : Fragment() {
                         AppDatabase.getInstance().medicineDao().delete(medicine)
                     }
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Лекарства удалены окончательно", Toast.LENGTH_SHORT).show()
+                        ToastUtils.showCustomToast(requireContext(), "Лекарства удалены окончательно", ToastType.ERROR)
                         loadDeletedMedicines()
                     }
                 }

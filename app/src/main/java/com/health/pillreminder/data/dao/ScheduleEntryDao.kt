@@ -23,6 +23,6 @@ interface ScheduleEntryDao {
     @Query("SELECT * FROM schedule_entries WHERE id = :id LIMIT 1")
     suspend fun getScheduleEntryById(id: Long): ScheduleEntry?
 
-    @Query("SELECT * FROM schedule_entries LEFT JOIN medicines medicine on medicineId = medicine.id")
+    @Query("SELECT s.*, medicine.name, medicine.description FROM schedule_entries s LEFT JOIN medicines medicine on medicineId = medicine.id ORDER BY s.id DESC")
     suspend fun getAllScheduleEntries(): List<ScheduleEntry>
 }

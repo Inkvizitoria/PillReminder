@@ -1,5 +1,6 @@
 package com.health.pillreminder.ui.fragments
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.health.pillreminder.R
 import com.health.pillreminder.data.entities.ScheduleEntry
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DayHourAdapter(
@@ -17,7 +19,8 @@ class DayHourAdapter(
     override fun getItemCount(): Int = 24
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hour_block, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_hour_block, parent, false)
         return HourViewHolder(view)
     }
 
@@ -35,12 +38,12 @@ class DayHourAdapter(
             else if (entry.repeatValue != null && entry.repeatUnit != null) {
                 val unit = entry.repeatUnit.toLowerCase(Locale.getDefault())
                 if (unit in listOf("час", "часов")) {
-                    val recurringTimes = generateRecurringTimesForHours(dayStart, entry.repeatValue)
+                    val recurringTimes = generateRecurringTimesForHours(dayStart, entry.repeatValue, entry.activeStartTime, entry.activeEndTime)
                     if (recurringTimes.any { it in hourStart until hourEnd }) {
                         events.add(entry)
                     }
                 } else if (unit in listOf("минут", "минуты", "минута")) {
-                    val recurringTimes = generateRecurringTimesForMinutes(dayStart, entry.repeatValue)
+                    val recurringTimes = generateRecurringTimesForMinutes(dayStart, entry.repeatValue, entry.activeStartTime, entry.activeEndTime)
                     if (recurringTimes.any { it in hourStart until hourEnd }) {
                         events.add(entry)
                     }
@@ -51,40 +54,47 @@ class DayHourAdapter(
     }
 
     /**
-     * Генерирует времена для повторяющихся событий, заданных в часах.
-     * Начинаем с 00:00, первая метка = 00:00 + repeatValue часов, до 24:00.
+     * Генерирует времена для повторяющихся событий, заданных в часах,
+     * учитывая активный период, указанный в графике.
+     * Генерация происходит с (dayStart + activeStartTime) до (dayStart + activeEndTime).
      */
-    private fun generateRecurringTimesForHours(dayStart: Long, repeatValue: Int): List<Long> {
+    private fun generateRecurringTimesForHours(
+        dayStart: Long,
+        repeatValue: Int,
+        activeStartTime: Long,
+        activeEndTime: Long
+    ): List<Long> {
         val result = mutableListOf<Long>()
-        var time = dayStart // Начинаем с 00:00
-        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
-
+        val startTime = dayStart + activeStartTime  // активное время начала, например, 10:00
+        val endTime = dayStart + activeEndTime        // активное время окончания, например, 19:00
+        var time = startTime + repeatValue * 60 * 60 * 1000L
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 60 * 1000L // Добавляем repeatValue часов
+            time += repeatValue * 60 * 60 * 1000L
         }
-
         return result
     }
-
 
     /**
-     * Генерирует времена для повторяющихся событий, заданных в минутах.
-     * Начинаем с 00:00, первая метка = 00:00 + repeatValue минут, до 24:00.
+     * Генерирует времена для повторяющихся событий, заданных в минутах,
+     * с учетом активного периода графика.
      */
-    private fun generateRecurringTimesForMinutes(dayStart: Long, repeatValue: Int): List<Long> {
+    private fun generateRecurringTimesForMinutes(
+        dayStart: Long,
+        repeatValue: Int,
+        activeStartTime: Long,
+        activeEndTime: Long
+    ): List<Long> {
         val result = mutableListOf<Long>()
-        var time = dayStart // Начинаем с 00:00
-        val endTime = dayStart + 24 * 60 * 60 * 1000L // Конец дня (следующая полночь)
-
+        val startTime = dayStart + activeStartTime
+        val endTime = dayStart + activeEndTime
+        var time = startTime + repeatValue * 60 * 1000L
         while (time < endTime) {
             result.add(time)
-            time += repeatValue * 60 * 1000L // Добавляем repeatValue минут
+            time += repeatValue * 60 * 1000L
         }
-
         return result
     }
-
 
     inner class HourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvHour: TextView = itemView.findViewById(R.id.tvHour)
